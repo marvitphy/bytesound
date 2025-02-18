@@ -55,7 +55,7 @@ export const sounds = [
   },
   {
     name: "Clock",
-    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/2f6fdb53-7551-4360-b161-15cdbf08fde7",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/ad71eba0-a654-4517-95cc-68bd0f75e320",
     icon: Clock,
   },
 ];
