@@ -187,10 +187,12 @@ export default function Home() {
       />
       <div id="youtube-player" className="hidden"></div>
 
-      <div className="relative">
+      <div className="relative w-full flex items-center justify-center">
         <div className="h-full flex flex-col z-50 min-h-[650px] bg-white/10 border border-white/25 backdrop-blur-md w-full  md:w-[700px] rounded-2xl">
-          <div className="flex-1 w-full h-full grid grid-cols-3 md:grid-rows-4
-           px-6 py-10 md:px-10 md:py-10 gap-3 ">
+          <div
+            className="flex-1 w-full h-full grid grid-cols-3 md:grid-rows-4
+           px-6 py-10 md:px-10 md:py-10 gap-3 "
+          >
             {sounds.map((sound, index) => (
               <motion.button
                 onClick={() => togglePlay(sound)}
@@ -240,7 +242,7 @@ export default function Home() {
 
         <button
           onClick={handleToggleAllSounds}
-          className="w-[250px] transition-all hover:scale-105 hover:bg-white/20 bottom-0 h-fit inset-x-0 mx-auto translate-y-1/2 bg-white/10 border border-white/20 backdrop-blur-sm rounded-full  flex items-center justify-center absolute py-2 gap-2"
+          className="w-[250px] transition-all hover:scale-105 hover:bg-white/20 bottom-0 h-fit inset-x-0 mx-auto translate-y-1/2 bg-white/10 border border-white/20 backdrop-blur-sm z-50 rounded-full  flex items-center justify-center absolute py-2 gap-2"
         >
           <div className="border border-white/40 rounded-full p-2 text-white">
             {anySoundPlaying ? <Pause size={16} /> : <Play size={16} />}
