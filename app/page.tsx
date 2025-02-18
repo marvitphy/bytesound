@@ -27,7 +27,6 @@ export default function Home() {
     selectedPreset,
   } = useSoundsPlayer();
 
-
   const isFirstRender = useIsFirstRender();
   return (
     <div className="flex relative overflow-y-hidden bg-neutral-950 text-white justify-center items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -83,7 +82,7 @@ export default function Home() {
           >
             {sounds.map((sound, index) => (
               <motion.button
-                onClick={() => togglePlay(sound)}
+                onClick={() => (!selectedPreset ? togglePlay(sound) : () => {})}
                 key={index}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 1.1 }}
@@ -94,8 +93,10 @@ export default function Home() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ opacity: 0 }}
+                // disabled all less the with preset
+                disabled={selectedPreset && !playing[sound.name] ? true : false}
                 data-playing={playing[sound.name] ? "true" : "false"}
-                className="w-full relative group h-full data-[playing=false]:opacity-50 opacity-100 flex flex-col justify-between items-center transition-all place-self-center bg-white/10 border border-white/20 backdrop-blur-sm rounded-lg py-4 px-2"
+                className="w-full relative group disabled:opacity-60 h-full data-[playing=false]:opacity-50 opacity-100 flex flex-col justify-between items-center transition-all place-self-center bg-white/10 border border-white/20 backdrop-blur-sm rounded-lg py-4 px-2"
               >
                 <div className="flex my-auto flex-col gap-2 items-center">
                   <sound.icon size={32} />

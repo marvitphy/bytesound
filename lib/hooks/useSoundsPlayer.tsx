@@ -65,35 +65,32 @@ export function useSoundsPlayer() {
         },
       });
     };
-
-    return () => {
-      Object.values(audioElements).forEach((audio) => audio?.pause());
-      if (playerRef.current) {
-        playerRef.current.destroy();
-      }
-    };
   }, []);
 
   useEffect(() => {
-    // Se nenhum gênero estiver tocando, não é necessário alterar nada.
-    const isAnyPlaying = Object.values(playing).some((status) => status);
-    if (!isAnyPlaying) return;
+    if (!playing["Lofi"] && !playing["Classical"] && !playing["Downtempo"])
+      return;
 
     const video =
       videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
     const start = Math.floor(Math.random() * video.duration);
 
-    // Atualiza o estado para que somente o gênero selecionado fique ativo
-    setPlaying((prev) => {
-      const updated = Object.fromEntries(
-        Object.keys(prev).map((key) => [
-          key,
-          key.toLowerCase() === genreSelected,
-        ])
-      );
-      return updated;
-    });
+    // Criando um objeto que vai garantir que só um gênero toque por vez
+    const genreState = {
+      Lofi: genreSelected === "lofi",
+      Classical: genreSelected === "classical",
+      Downtempo: genreSelected === "downtempo",
+    };
 
+    // Atualizando os estados dos gêneros e garantindo que apenas o gênero selecionado toque
+    setPlaying((prev) => ({
+      ...prev,
+      Lofi: genreState.Lofi,
+      Classical: genreState.Classical,
+      Downtempo: genreState.Downtempo,
+    }));
+
+    // Carregando o vídeo do gênero selecionado, se possível
     if (playerRef.current) {
       playerRef.current.loadVideoById(
         {
@@ -231,7 +228,7 @@ export function useSoundsPlayer() {
       setPreviouslyPlaying({});
     }
   };
-  
+
   useEffect(() => {
     const isAnySoundPlaying =
       Object.values(playing).some((value) => value) ||
