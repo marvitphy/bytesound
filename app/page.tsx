@@ -64,6 +64,7 @@ export default function Home() {
   const [playing, setPlaying] = useState<{ [key: string]: boolean }>({});
   const [volume, setVolume] = useState<{ [key: string]: number }>({});
   const isFirstRender = useIsFirstRender();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -73,7 +74,9 @@ export default function Home() {
     document.body.appendChild(tag);
     const video = lofiIds[Math.floor(Math.random() * lofiIds.length)];
     const start = Math.floor(Math.random() * video.duration);
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).onYouTubeIframeAPIReady = () => {
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       playerRef.current = new (window as any).YT.Player("youtube-player", {
         height: "0",
         width: "0",
@@ -85,6 +88,7 @@ export default function Home() {
           start: start,
         },
         events: {
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onReady: (event: any) => {
             event.target.setVolume(volume["Lofi"] || 22);
           },
