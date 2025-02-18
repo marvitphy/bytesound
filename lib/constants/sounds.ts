@@ -6,6 +6,7 @@ import {
   CloudLightning,
   HeartPulse,
   Music,
+  AudioWaveform,
 } from "lucide-react";
 
 export const sounds = [
@@ -39,10 +40,16 @@ export const sounds = [
     url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/b8426ce8-0da9-4dc6-9fd7-956587874b15",
     icon: HeartPulse,
   },
+
   {
     name: "Lofi",
     url: "M7lc1UVf-VE",
     icon: Music,
     youtube: true,
+  },
+  {
+    name: "Brown Noise",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/f668a1a3-c2eb-404f-bcff-916ae4d2bbfe",
+    icon: AudioWaveform,
   },
 ];
