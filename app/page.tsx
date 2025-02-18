@@ -1,14 +1,7 @@
 "use client";
 import {
-  Cloud,
   Play,
   Pause,
-  Waves,
-  Wind,
-  Bird,
-  CloudLightning,
-  HeartPulse,
-  Music,
   RefreshCw,
 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
@@ -17,45 +10,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { lofiIds } from "@/lib/constants/lofiVideoIds";
 import { useIsFirstRender } from "@uidotdev/usehooks";
+import { sounds } from "@/lib/constants/sounds";
 
-const sounds = [
-  {
-    name: "Rain",
-    url: "/sounds/rain.mp3",
-    icon: Cloud,
-  },
-  {
-    name: "Waves",
-    url: "/sounds/waves.mp3",
-    icon: Waves,
-  },
-  {
-    name: "Wind",
-    url: "/sounds/waves.mp3",
-    icon: Wind,
-  },
-  {
-    name: "Birds",
-    url: "/sounds/birds.mp3",
-    icon: Bird,
-  },
-  {
-    name: "Thunder",
-    url: "/sounds/thunder.mp3",
-    icon: CloudLightning,
-  },
-  {
-    name: "Weightless",
-    url: "/sounds/weightless.mp3",
-    icon: HeartPulse,
-  },
-  {
-    name: "Lofi", // Novo som do YouTube
-    url: "M7lc1UVf-VE", // ID do vídeo do YouTube
-    icon: Music,
-    youtube: true,
-  },
-];
 
 export default function Home() {
   const [audioElements, setAudioElements] = useState<{
@@ -74,9 +30,9 @@ export default function Home() {
     document.body.appendChild(tag);
     const video = lofiIds[Math.floor(Math.random() * lofiIds.length)];
     const start = Math.floor(Math.random() * video.duration);
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).onYouTubeIframeAPIReady = () => {
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       playerRef.current = new (window as any).YT.Player("youtube-player", {
         height: "0",
         width: "0",
@@ -88,7 +44,7 @@ export default function Home() {
           start: start,
         },
         events: {
-           // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onReady: (event: any) => {
             event.target.setVolume(volume["Lofi"] || 22);
           },
