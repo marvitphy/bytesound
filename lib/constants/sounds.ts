@@ -7,35 +7,36 @@ import {
   HeartPulse,
   Music,
 } from "lucide-react";
+
 export const sounds = [
   {
     name: "Rain",
-    url: "/sounds/rain.mp3",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/9550971f-b3c2-4876-a962-2e265d903e41",
     icon: Cloud,
   },
   {
     name: "Waves",
-    url: "/sounds/waves.mp3",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/db01d241-ac5f-4cd0-8004-b8b1902cbc03",
     icon: Waves,
   },
   {
     name: "Wind",
-    url: "/sounds/waves.mp3",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/5984a1d2-a384-455f-a397-131b8ee12516",
     icon: Wind,
   },
   {
     name: "Birds",
-    url: "/sounds/birds.mp3",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/847eb388-2984-443d-b7d8-5a2b813e00a7",
     icon: Bird,
   },
   {
     name: "Thunder",
-    url: "/sounds/thunder.mp3",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/b535fa87-b6c7-4489-96f6-fd4d378bb662",
     icon: CloudLightning,
   },
   {
     name: "Weightless",
-    url: "/sounds/weightless.mp3",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/b8426ce8-0da9-4dc6-9fd7-956587874b15",
     icon: HeartPulse,
   },
   {
