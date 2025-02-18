@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import { lofiIds } from "@/lib/constants/lofiVideoIds";
+import { useIsFirstRender } from "@uidotdev/usehooks";
 
 const sounds = [
   {
