@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Relaxing Music",
   description: "ByteSound",
+  icons: {
+    icon: "/favicon-32x32.png",
+  }
 };
 
 export default function RootLayout({

@@ -188,8 +188,9 @@ export default function Home() {
       <div id="youtube-player" className="hidden"></div>
 
       <div className="relative">
-        <div className="h-full flex flex-col z-50 min-h-[650px] bg-white/10 border border-white/25 backdrop-blur-md w-[700px] rounded-2xl">
-          <div className="flex-1 w-full h-full grid grid-rows-4 grid-cols-4 p-10 gap-3 ">
+        <div className="h-full flex flex-col z-50 min-h-[650px] bg-white/10 border border-white/25 backdrop-blur-md w-full  md:w-[700px] rounded-2xl">
+          <div className="flex-1 w-full h-full grid grid-cols-3 md:grid-rows-4
+           px-6 py-10 md:px-10 md:py-10 gap-3 ">
             {sounds.map((sound, index) => (
               <motion.button
                 onClick={() => togglePlay(sound)}
