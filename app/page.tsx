@@ -59,11 +59,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (!playing["Lofi"] && !playing["Classical"]) return;
     const video =
       videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
     const start = Math.floor(Math.random() * video.duration);
 
-    console.log(genreSelected);
     if (genreSelected === "classical") {
       setPlaying((prev) => ({ ...prev, Lofi: false }));
       setPlaying((prev) => ({ ...prev, Classical: true }));
