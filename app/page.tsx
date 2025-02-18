@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSoundsPlayer } from "@/lib/hooks/useYoutubePlayer";
+import { useSoundsPlayer } from "@/lib/hooks/useSoundsPlayer";
 import { soundsPresets, presetIcons } from "@/lib/constants/presets";
 
 export default function Home() {
