@@ -9,6 +9,7 @@ import {
   AudioWaveform,
   Clock,
   Music2Icon,
+  Disc3,
 } from "lucide-react";
 
 export const sounds = [
@@ -58,6 +59,13 @@ export const sounds = [
     genre: "classical",
   },
   {
+    name: "Downtempo",
+    url: "mdJU5ogrPMY",
+    icon: Disc3,
+    youtube: true,
+    genre: "downtempo",
+  },
+  {
     name: "Brown Noise",
     url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/f668a1a3-c2eb-404f-bcff-916ae4d2bbfe",
     icon: AudioWaveform,
@@ -68,3 +76,4 @@ export const sounds = [
     icon: Clock,
   },
 ];
+

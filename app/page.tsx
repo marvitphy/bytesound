@@ -2,180 +2,33 @@
 import { Play, Pause, RefreshCw } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
 
-import { lofiIds } from "@/lib/constants/lofiVideoIds";
 import { useIsFirstRender } from "@uidotdev/usehooks";
 import { sounds } from "@/lib/constants/sounds";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useSoundsPlayer } from "@/lib/hooks/useYoutubePlayer";
+import { soundsPresets, presetIcons } from "@/lib/constants/presets";
 
 export default function Home() {
-  const [audioElements, setAudioElements] = useState<{
-    [key: string]: HTMLAudioElement | null;
-  }>({});
-  const [playing, setPlaying] = useState<{ [key: string]: boolean }>({});
-  const [volume, setVolume] = useState<{ [key: string]: number }>({});
+  const {
+    anySoundPlaying,
+    changeVolume,
+    handleRandomizeYoutube,
+    handleToggleAllSounds,
+    playing,
+    togglePlay,
+    volume,
+    handleSelectPreset,
+    selectedPreset,
+  } = useSoundsPlayer();
+
+
   const isFirstRender = useIsFirstRender();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const playerRef = useRef<any>(null);
-
-  const [genreSelected, setGenreSelected] = useState("lofi");
-  const videosByGenre = lofiIds.filter(
-    (video) => video.genre === genreSelected
-  );
-
-  useEffect(() => {
-    // Carregar API do YouTube
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
-
-    const video =
-      videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
-
-    console.log(video);
-
-    const start = Math.floor(Math.random() * video.duration);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).onYouTubeIframeAPIReady = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      playerRef.current = new (window as any).YT.Player("youtube-player", {
-        height: "0",
-        width: "0",
-        videoId: video.id,
-
-        playerVars: {
-          autoplay: 0,
-          controls: 1,
-          start: start,
-        },
-        events: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onReady: (event: any) => {
-            event.target.setVolume(volume["Lofi"] || 22);
-          },
-          //quando terminar trocar de musica
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onStateChange: (event: any) => {
-            if (event.data === 0) {
-              handleRandomizeYoutube();
-            }
-          },
-        },
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!playing["Lofi"] && !playing["Classical"]) return;
-    const video =
-      videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
-    const start = Math.floor(Math.random() * video.duration);
-
-    if (genreSelected === "classical") {
-      setPlaying((prev) => ({ ...prev, Lofi: false }));
-      setPlaying((prev) => ({ ...prev, Classical: true }));
-    } else {
-      setPlaying((prev) => ({ ...prev, Lofi: true }));
-      setPlaying((prev) => ({ ...prev, Classical: false }));
-    }
-
-    if (playerRef.current) {
-      playerRef.current.loadVideoById(
-        {
-          videoId: video.id,
-          startSeconds: start,
-        },
-        start
-      );
-    }
-  }, [genreSelected]);
-
-  const handleRandomizeYoutube = () => {
-    const video =
-      videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
-    const start = Math.floor(Math.random() * video.duration);
-
-    if (playerRef.current) {
-      playerRef.current.loadVideoById(
-        {
-          videoId: video.id,
-          startSeconds: start,
-        },
-        start
-      );
-    }
-  };
-
-  const togglePlay = (sound: (typeof sounds)[number]) => {
-    if (sound.youtube) {
-      setGenreSelected(sound.genre);
-
-      if (playerRef.current) {
-        if (playing[sound.name]) {
-          playerRef.current.pauseVideo();
-        } else {
-          playerRef.current.playVideo();
-        }
-      }
-    } else {
-      let audio = audioElements[sound.name];
-
-      if (!audio) {
-        audio = new Audio(sound.url);
-        audio.loop = true;
-        audio.volume = (volume[sound.name] || 20) / 100;
-        setAudioElements((prev) => ({ ...prev, [sound.name]: audio }));
-      }
-
-      if (playing[sound.name]) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
-    }
-
-    setPlaying((prev) => ({ ...prev, [sound.name]: !prev[sound.name] }));
-  };
-
-  const changeVolume = (sound: (typeof sounds)[number], value: number[]) => {
-    if (sound.youtube) {
-      if (playerRef.current) {
-        playerRef.current.setVolume(value[0]);
-      }
-    } else {
-      const audio = audioElements[sound.name];
-      if (audio) {
-        audio.volume = value[0] / 100;
-      }
-    }
-
-    setVolume((prev) => ({ ...prev, [sound.name]: value[0] }));
-  };
-  const [previouslyPlaying, setPreviouslyPlaying] = useState<{
-    [key: string]: boolean;
-  }>({});
-  const handleToggleAllSounds = () => {
-    if (anySoundPlaying) {
-      // Salva os sons que estão tocando atualmente antes de pausar tudo
-      setPreviouslyPlaying(playing);
-      Object.keys(playing).forEach((key) => {
-        if (playing[key]) {
-          togglePlay(sounds.find((sound) => sound.name === key) || sounds[0]);
-        }
-      });
-    } else {
-      // Retoma os sons que estavam tocando antes da pausa
-      Object.keys(previouslyPlaying).forEach((key) => {
-        if (previouslyPlaying[key]) {
-          togglePlay(sounds.find((sound) => sound.name === key) || sounds[0]);
-        }
-      });
-      setPreviouslyPlaying({}); // Limpa o estado após retomar os sons
-    }
-  };
-
-  const anySoundPlaying = Object.values(playing).some((value) => value);
-
   return (
     <div className="flex relative overflow-y-hidden bg-neutral-950 text-white justify-center items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <video
@@ -187,10 +40,45 @@ export default function Home() {
       />
       <div id="youtube-player" className="hidden"></div>
 
-      <div className="relative w-full flex items-center justify-center">
+      <div className="relative w-full md:w-fit flex items-center flex-col gap-4 justify-center">
+        <div className="md:w-[100px] w-full transition-all  hover:bg-white/20 bottom-0 h-full right-0 md:translate-x-[120px] bg-white/10 border border-white/20 backdrop-blur-sm z-50 rounded-2xl  flex flex-col items-center justify-start text-neutral-200 md:absolute py-4 gap-2">
+          <span>Presets</span>
+          <div className="md:flex grid grid-cols-3 md:flex-col py-2 px-5 md:p-2 gap-2 w-full">
+            {Object.entries(soundsPresets).map(([presetName, presets]) => (
+              <div key={presetName}>
+                {presets.map((preset, index) => {
+                  const Icon = presetIcons[presetName];
+                  return (
+                    <motion.button
+                      key={index}
+                      onClick={() => handleSelectPreset(presetName)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 1.1 }}
+                      transition={{
+                        duration: 0.2,
+                        delay: isFirstRender ? 0.2 * index : 0,
+                      }}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      data-selected={
+                        presetName === selectedPreset ? "true" : "false"
+                      }
+                      className="flex hover:bg-black/20 data-[selected=true]:bg-white/30 transition-all flex-col gap-2 w-full py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500"
+                      exit={{ opacity: 0 }}
+                      data-playing={playing[presetName] ? "true" : "false"}
+                    >
+                      {Icon && <Icon size={24} />}
+                      <span>{presetName}</span>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="h-full flex flex-col z-50 min-h-[650px] bg-white/10 border border-white/25 backdrop-blur-md w-full  md:w-[700px] rounded-2xl">
           <div
-            className="flex-1 w-full h-full grid grid-cols-3 md:grid-rows-4
+            className="flex-1 w-full h-full grid grid-cols-2 md:grid-cols-4
            px-6 py-10 md:px-10 md:py-10 gap-3 "
           >
             {sounds.map((sound, index) => (
@@ -215,15 +103,25 @@ export default function Home() {
                 </div>
 
                 {sound.youtube && (
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRandomizeYoutube();
-                    }}
-                    className="absolute active:bg-white/10 bg-white/20 p-2 rounded-xl top-1 right-1 opacity-0 group-hover:opacity-100 transition-all"
-                  >
-                    <RefreshCw size={18} />
-                  </div>
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger disabled asChild>
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRandomizeYoutube();
+                          }}
+                          data-disabled={!playing[sound.name]}
+                          className="absolute data-[disabled=true]:pointer-events-none active:bg-white/10 bg-white/20 p-2 rounded-xl top-1 right-1 opacity-0 group-hover:opacity-100 transition-all"
+                        >
+                          <RefreshCw size={18} />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Randomize Music</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
                 <Slider
                   className="self-end opacity-0 group-hover:opacity-100 transition-all"
@@ -242,7 +140,8 @@ export default function Home() {
 
         <button
           onClick={handleToggleAllSounds}
-          className="w-[250px] transition-all hover:scale-105 hover:bg-white/20 bottom-0 h-fit inset-x-0 mx-auto translate-y-1/2 bg-white/10 border border-white/20 backdrop-blur-sm z-50 rounded-full  flex items-center justify-center absolute py-2 gap-2"
+          disabled={selectedPreset ? true : false}
+          className="w-[250px] disabled:opacity-60 transition-all hover:scale-105 hover:bg-white/20 bottom-0 h-fit inset-x-0 mx-auto translate-y-1/2 bg-white/10 border border-white/20 backdrop-blur-sm z-50 rounded-full  flex items-center justify-center absolute py-2 gap-2"
         >
           <div className="border border-white/40 rounded-full p-2 text-white">
             {anySoundPlaying ? <Pause size={16} /> : <Play size={16} />}
