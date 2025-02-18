@@ -78,7 +78,7 @@ export default function Home() {
         <div className="h-full flex flex-col z-50 min-h-[650px] bg-white/10 border border-white/25 backdrop-blur-md w-full  md:w-[700px] rounded-2xl">
           <div
             className="flex-1 w-full h-full grid grid-cols-2 md:grid-cols-4
-           px-6 py-10 md:px-10 md:py-10 gap-3 "
+           px-6 pt-6 pb-10 md:px-10 md:py-10 gap-3 "
           >
             {sounds.map((sound, index) => (
               <motion.button
@@ -96,7 +96,7 @@ export default function Home() {
                 // disabled all less the with preset
                 // disabled={selectedPreset && !playing[sound.name] ? true : false}
                 data-playing={playing[sound.name] ? "true" : "false"}
-                className="w-full relative group disabled:opacity-60 h-full data-[playing=false]:opacity-50 opacity-100 flex flex-col justify-between items-center transition-all place-self-center bg-white/10 border border-white/20 backdrop-blur-sm rounded-lg py-4 px-2"
+                className="w-full min-h-32 md:min-h-0 l relative group disabled:opacity-60 h-full data-[playing=false]:opacity-50 opacity-100 flex flex-col justify-between items-center transition-all place-self-center bg-white/10 border border-white/20 backdrop-blur-sm rounded-lg py-4 px-2"
               >
                 <div className="flex my-auto flex-col gap-2 items-center">
                   <sound.icon size={32} />

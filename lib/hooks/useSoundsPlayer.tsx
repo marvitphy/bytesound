@@ -155,7 +155,6 @@ export function useSoundsPlayer() {
     setPlaying((prev) => ({ ...prev, [sound.name]: !prev[sound.name] }));
   };
 
-
   const handleSelectPreset = useCallback(
     (preset) => {
       const presetSounds = soundsPresets[preset][0];
@@ -173,7 +172,6 @@ export function useSoundsPlayer() {
         if (audioElements) {
           Object.keys(audioElements).forEach((key) => {
             const audio = audioElements[key];
-
             if (audio) {
               audio.pause();
             }
@@ -184,29 +182,26 @@ export function useSoundsPlayer() {
         return;
       }
 
-      const isPresetActive = Object.entries(presetSounds).every(
-        ([soundName, shouldPlay]) => playing[soundName] === shouldPlay
-      );
-
-      // Pausar todos os sons antes de selecionar o novo preset
-      Object.entries(playing).forEach(([soundName]) => {
-        const sound = sounds.find((s) => s.name === soundName);
-        if (sound) togglePlay(sound);
-      });
-
-      setSelectedPreset(isPresetActive ? "" : preset);
-
-      setPlaying(isPresetActive ? {} : soundsPresets[preset]);
-
-      Object.entries(presetSounds).forEach(([soundName, shouldPlay]) => {
-        const sound = sounds.find((s) => s.name === soundName);
-        if (sound && (shouldPlay || playing[soundName])) {
-          togglePlay(sound);
+      Object.entries(playing).forEach(([soundName, isPlaying]) => {
+        if (!presetSounds[soundName] && isPlaying) {
+          const sound = sounds.find((s) => s.name === soundName);
+          if (sound) togglePlay(sound);
         }
       });
+
+      Object.entries(presetSounds).forEach(([soundName, shouldPlay]) => {
+        if (shouldPlay && !playing[soundName]) {
+          const sound = sounds.find((s) => s.name === soundName);
+          if (sound) togglePlay(sound);
+        }
+      });
+
+      setSelectedPreset(preset);
+      setPlaying(presetSounds);
     },
     [playing, selectedPreset, soundsPresets, sounds, togglePlay]
   );
+
   const changeVolume = (sound: (typeof sounds)[number], value: number[]) => {
     if (sound.youtube) {
       if (playerRef.current) {
