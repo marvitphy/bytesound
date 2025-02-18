@@ -51,7 +51,7 @@ export default function Home() {
                     <motion.button
                       key={index}
                       onClick={() => handleSelectPreset(presetName)}
-                      whileHover={{ scale: 1.05 }}
+                   
                       whileTap={{ scale: 1.1 }}
                       transition={{
                         duration: 0.2,
@@ -82,9 +82,9 @@ export default function Home() {
           >
             {sounds.map((sound, index) => (
               <motion.button
-                onClick={() => (!selectedPreset ? togglePlay(sound) : () => {})}
+                onClick={() => togglePlay(sound)}
                 key={index}
-                whileHover={{ scale: 1.05 }}
+                // whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 1.1 }}
                 transition={{
                   duration: 0.2,
@@ -94,7 +94,7 @@ export default function Home() {
                 animate={{ scale: 1 }}
                 exit={{ opacity: 0 }}
                 // disabled all less the with preset
-                disabled={selectedPreset && !playing[sound.name] ? true : false}
+                // disabled={selectedPreset && !playing[sound.name] ? true : false}
                 data-playing={playing[sound.name] ? "true" : "false"}
                 className="w-full relative group disabled:opacity-60 h-full data-[playing=false]:opacity-50 opacity-100 flex flex-col justify-between items-center transition-all place-self-center bg-white/10 border border-white/20 backdrop-blur-sm rounded-lg py-4 px-2"
               >
@@ -119,7 +119,7 @@ export default function Home() {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Randomize Music</p>
+                        <p>Shuffle</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -141,7 +141,7 @@ export default function Home() {
 
         <button
           onClick={handleToggleAllSounds}
-          disabled={selectedPreset ? true : false}
+          disabled={true}
           className="w-[250px] disabled:opacity-60 transition-all hover:scale-105 hover:bg-white/20 bottom-0 h-fit inset-x-0 mx-auto translate-y-1/2 bg-white/10 border border-white/20 backdrop-blur-sm z-50 rounded-full  flex items-center justify-center absolute py-2 gap-2"
         >
           <div className="border border-white/40 rounded-full p-2 text-white">

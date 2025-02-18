@@ -54,7 +54,9 @@ export function useSoundsPlayer() {
         events: {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onReady: (event: any) => {
-            event.target.setVolume(volume["Lofi"] || 22);
+            event.target.setVolume(
+              volume["Lofi"] || volume["Downtempo"] || volume["Classical"] || 22
+            );
           },
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onStateChange: (event: any) => {
@@ -68,29 +70,33 @@ export function useSoundsPlayer() {
   }, []);
 
   useEffect(() => {
-    if (!playing["Lofi"] && !playing["Classical"] && !playing["Downtempo"])
+    if (
+      !playing["Lofi"] &&
+      !playing["Classical"] &&
+      !playing["Downtempo"] &&
+      !playing["Groove"]
+    )
       return;
 
     const video =
       videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
     const start = Math.floor(Math.random() * video.duration);
 
-    // Criando um objeto que vai garantir que só um gênero toque por vez
     const genreState = {
       Lofi: genreSelected === "lofi",
       Classical: genreSelected === "classical",
       Downtempo: genreSelected === "downtempo",
+      Groove: genreSelected === "groove",
     };
 
-    // Atualizando os estados dos gêneros e garantindo que apenas o gênero selecionado toque
     setPlaying((prev) => ({
       ...prev,
       Lofi: genreState.Lofi,
       Classical: genreState.Classical,
       Downtempo: genreState.Downtempo,
+      Groove: genreState.Groove,
     }));
 
-    // Carregando o vídeo do gênero selecionado, se possível
     if (playerRef.current) {
       playerRef.current.loadVideoById(
         {
@@ -149,15 +155,30 @@ export function useSoundsPlayer() {
     setPlaying((prev) => ({ ...prev, [sound.name]: !prev[sound.name] }));
   };
 
+
   const handleSelectPreset = useCallback(
     (preset) => {
       const presetSounds = soundsPresets[preset][0];
+
       if (preset === selectedPreset) {
-        // Pausar todos os sons ao selecionar o preset atual
-        Object.entries(presetSounds).forEach(([soundName]) => {
-          const sound = sounds.find((s) => s.name === soundName);
-          if (sound) togglePlay(sound);
-        });
+        Object.entries({ ...presetSounds, ...previouslyPlaying }).forEach(
+          ([soundName]) => {
+            const sound = sounds.find((s) => s.name === soundName);
+            if (sound) togglePlay(sound);
+          }
+        );
+        if (playerRef.current) {
+          playerRef.current.pauseVideo();
+        }
+        if (audioElements) {
+          Object.keys(audioElements).forEach((key) => {
+            const audio = audioElements[key];
+
+            if (audio) {
+              audio.pause();
+            }
+          });
+        }
         setSelectedPreset("");
         setPlaying({});
         return;
@@ -174,9 +195,9 @@ export function useSoundsPlayer() {
       });
 
       setSelectedPreset(isPresetActive ? "" : preset);
+
       setPlaying(isPresetActive ? {} : soundsPresets[preset]);
 
-      // Tocar os sons do novo preset
       Object.entries(presetSounds).forEach(([soundName, shouldPlay]) => {
         const sound = sounds.find((s) => s.name === soundName);
         if (sound && (shouldPlay || playing[soundName])) {
@@ -186,7 +207,6 @@ export function useSoundsPlayer() {
     },
     [playing, selectedPreset, soundsPresets, sounds, togglePlay]
   );
-
   const changeVolume = (sound: (typeof sounds)[number], value: number[]) => {
     if (sound.youtube) {
       if (playerRef.current) {
@@ -207,8 +227,8 @@ export function useSoundsPlayer() {
 
     if (isAnySoundPlaying) {
       setPreviouslyPlaying(playing);
-
-      Object.keys(playing).forEach((key) => {
+      console.log(playing);
+      Object.keys({ ...playing }).forEach((key) => {
         const sound = sounds.find((sound) => sound.name === key);
         if (sound) {
           togglePlay(sound);
@@ -236,7 +256,7 @@ export function useSoundsPlayer() {
         (audio) => audio && audio.readyState > 2 && !audio.paused
       );
     setAnySoundPlaying(isAnySoundPlaying);
-  }, [playing, audioElements]); // Dependendo do `playing` e `audioElements`
+  }, [playing, audioElements]);
 
   return {
     togglePlay,

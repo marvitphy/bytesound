@@ -10,6 +10,7 @@ import {
   Clock,
   Music2Icon,
   Disc3,
+  DiscAlbum,
 } from "lucide-react";
 
 export const sounds = [
@@ -75,5 +76,11 @@ export const sounds = [
     url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/ad71eba0-a654-4517-95cc-68bd0f75e320",
     icon: Clock,
   },
+  {
+    name: "Groove",
+    url: "mdJU5ogrPMY",
+    icon: DiscAlbum,
+    youtube: true,
+    genre: "groove",
+  },
 ];
-
