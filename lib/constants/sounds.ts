@@ -7,6 +7,7 @@ import {
   HeartPulse,
   Music,
   AudioWaveform,
+  Clock,
 } from "lucide-react";
 
 export const sounds = [
@@ -51,5 +52,10 @@ export const sounds = [
     name: "Brown Noise",
     url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/f668a1a3-c2eb-404f-bcff-916ae4d2bbfe",
     icon: AudioWaveform,
+  },
+  {
+    name: "Clock",
+    url: "https://pqbnoyezospypjajwdzi.supabase.co/storage/v1/object/public/thinktalk/uploads/2f6fdb53-7551-4360-b161-15cdbf08fde7",
+    icon: Clock,
   },
 ];
