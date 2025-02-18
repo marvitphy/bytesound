@@ -53,6 +53,13 @@ export default function Home() {
           onReady: (event: any) => {
             event.target.setVolume(volume["Lofi"] || 22);
           },
+          //quando terminar trocar de musica
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onStateChange: (event: any) => {
+            if (event.data === 0) {
+              handleRandomizeYoutube();
+            }
+          },
         },
       });
     };
