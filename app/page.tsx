@@ -14,8 +14,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useIsClient, useIsFirstRender } from "@uidotdev/usehooks";
-import { convertToSeconds } from "@/lib/convertHoursToSeconds";
+
 import { lofiIds } from "@/lib/constants/lofiVideoIds";
 
 const sounds = [
