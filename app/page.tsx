@@ -1,9 +1,5 @@
 "use client";
-import {
-  Play,
-  Pause,
-  RefreshCw,
-} from "lucide-react";
+import { Play, Pause, RefreshCw } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -11,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { lofiIds } from "@/lib/constants/lofiVideoIds";
 import { useIsFirstRender } from "@uidotdev/usehooks";
 import { sounds } from "@/lib/constants/sounds";
-
 
 export default function Home() {
   const [audioElements, setAudioElements] = useState<{
@@ -23,12 +18,22 @@ export default function Home() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
 
+  const [genreSelected, setGenreSelected] = useState("lofi");
+  const videosByGenre = lofiIds.filter(
+    (video) => video.genre === genreSelected
+  );
+
   useEffect(() => {
     // Carregar API do YouTube
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     document.body.appendChild(tag);
-    const video = lofiIds[Math.floor(Math.random() * lofiIds.length)];
+
+    const video =
+      videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
+
+    console.log(video);
+
     const start = Math.floor(Math.random() * video.duration);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).onYouTubeIframeAPIReady = () => {
@@ -53,8 +58,34 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const video =
+      videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
+    const start = Math.floor(Math.random() * video.duration);
+
+    console.log(genreSelected);
+    if (genreSelected === "classical") {
+      setPlaying((prev) => ({ ...prev, Lofi: false }));
+      setPlaying((prev) => ({ ...prev, Classical: true }));
+    } else {
+      setPlaying((prev) => ({ ...prev, Lofi: true }));
+      setPlaying((prev) => ({ ...prev, Classical: false }));
+    }
+
+    if (playerRef.current) {
+      playerRef.current.loadVideoById(
+        {
+          videoId: video.id,
+          startSeconds: start,
+        },
+        start
+      );
+    }
+  }, [genreSelected]);
+
   const handleRandomizeYoutube = () => {
-    const video = lofiIds[Math.floor(Math.random() * lofiIds.length)];
+    const video =
+      videosByGenre[Math.floor(Math.random() * videosByGenre.length)];
     const start = Math.floor(Math.random() * video.duration);
 
     if (playerRef.current) {
@@ -70,6 +101,8 @@ export default function Home() {
 
   const togglePlay = (sound: (typeof sounds)[number]) => {
     if (sound.youtube) {
+      setGenreSelected(sound.genre);
+
       if (playerRef.current) {
         if (playing[sound.name]) {
           playerRef.current.pauseVideo();

@@ -8,6 +8,7 @@ import {
   Music,
   AudioWaveform,
   Clock,
+  Music2Icon,
 } from "lucide-react";
 
 export const sounds = [
@@ -47,6 +48,14 @@ export const sounds = [
     url: "M7lc1UVf-VE",
     icon: Music,
     youtube: true,
+    genre: "lofi", // Adicionado
+  },
+  {
+    name: "Classical",
+    url: "mdJU5ogrPMY",
+    icon: Music2Icon,
+    youtube: true,
+    genre: "classical",
   },
   {
     name: "Brown Noise",

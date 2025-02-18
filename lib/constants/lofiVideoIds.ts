@@ -26,9 +26,14 @@ export const lofiIds = [
     duration: convertToSeconds("2:50:27"),
     genre: "lofi",
   },
-//   {
-//     id: "3AkZazth0a0",
-//     duration: convertToSeconds("3:07:45"),
-//     genre: "classical",
-//   },
+  {
+    id: "3AkZazth0a0",
+    duration: convertToSeconds("3:07:45"),
+    genre: "classical",
+  },
+  {
+    id: "E5zroU6vuuo",
+    duration: convertToSeconds("6:36:41"),
+    genre: "classical",
+  },
 ];
