@@ -220,6 +220,7 @@ export function useSoundsPlayer() {
 
     if (isAnySoundPlaying) {
       const currentlyPlaying = Object.fromEntries(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         Object.entries(playing).filter(([_, value]) => value)
       );
       setPreviouslyPlaying(currentlyPlaying);
