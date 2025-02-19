@@ -219,25 +219,28 @@ export function useSoundsPlayer() {
     const isAnySoundPlaying = Object.values(playing).some((value) => value);
 
     if (isAnySoundPlaying) {
-      setPreviouslyPlaying(playing);
-      console.log(playing);
-      Object.keys({ ...playing }).forEach((key) => {
+      const currentlyPlaying = Object.fromEntries(
+        Object.entries(playing).filter(([_, value]) => value)
+      );
+      setPreviouslyPlaying(currentlyPlaying);
+
+      Object.keys(currentlyPlaying).forEach((key) => {
         const sound = sounds.find((sound) => sound.name === key);
         if (sound) {
           togglePlay(sound);
         }
       });
 
+      setPlaying({});
       setAnySoundPlaying(false);
     } else {
       Object.keys(previouslyPlaying).forEach((key) => {
-        if (previouslyPlaying[key]) {
-          const sound = sounds.find((sound) => sound.name === key);
-          if (sound) {
-            togglePlay(sound);
-          }
+        const sound = sounds.find((sound) => sound.name === key);
+        if (sound) {
+          togglePlay(sound);
         }
       });
+
       setPreviouslyPlaying({});
     }
   };
