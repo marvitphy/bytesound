@@ -21,8 +21,6 @@ export function useSoundsPlayer() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
   const [genreSelected, setGenreSelected] = useState("lofi");
   const videosByGenre = lofiIds.filter(
     (video) => video.genre === genreSelected

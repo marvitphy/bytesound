@@ -1,4 +1,4 @@
-import { Brain, Code, Code2 } from "lucide-react";
+import { Bed, Brain, Code, Code2 } from "lucide-react";
 
 export const soundsPresets = {
   Focus: [
@@ -19,6 +19,16 @@ export const soundsPresets = {
       "Brown Noise": true,
     },
   ],
+  Sleep: [
+    {
+      Rain: true,
+      Waves: true,
+      Wind: true,
+      Thunder: true,
+      Weightless: true,
+      "Brown Noise": true,
+    },
+  ],
   Code2: [
     {
       Rain: true,
@@ -34,4 +44,5 @@ export const presetIcons = {
   Focus: Brain,
   Code: Code,
   Code2: Code2,
+  Sleep: Bed,
 };
