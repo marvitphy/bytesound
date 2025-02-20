@@ -64,22 +64,23 @@ export default function Home() {
                         data-selected={
                           presetName === selectedPreset ? "true" : "false"
                         }
-                        className="flex  hover:bg-black/20 data-[selected=true]:bg-white/30 transition-all flex-col gap-2 w-full py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500 text-sm"
+                        className="flex relative hover:bg-black/20 data-[selected=true]:bg-white/30 transition-all flex-col gap-2 w-full
+                         py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500 text-sm"
                         exit={{ opacity: 0 }}
                         data-playing={playing[presetName] ? "true" : "false"}
                       >
+                        {presetName === "Custom" && (
+                          <button
+                            onClick={handleDeleteCustomPreset}
+                            className="w-6 h-6 rounded-full bg-white/20 absolute top-[-5px] right-[-5px] flex items-center justify-center"
+                          >
+                            <Trash size={14} />
+                          </button>
+                        )}
                         {Icon && <Icon size={24} />}
 
                         <span>{presetName}</span>
                       </motion.button>
-                      {presetName === "Custom" && (
-                        <button
-                          onClick={handleDeleteCustomPreset}
-                          className="w-6 h-6 rounded-full bg-white/20 relative top-1 right-1 flex items-center justify-center"
-                        >
-                          <Trash size={14} />
-                        </button>
-                      )}
                     </>
                   );
                 })}
@@ -87,21 +88,24 @@ export default function Home() {
             ))}
 
             {anySoundPlaying && !selectedPreset && (
-              <motion.button
-                onClick={() => handleCreateCustomPreset()}
-                whileTap={{ scale: 1.1 }}
-                transition={{
-                  duration: 0.2,
-                  delay: isFirstRender ? 0.2 * 4 : 0,
-                }}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="flex  hover:bg-black/20 transition-all flex-col gap-2 w-full py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500 text-sm"
-                exit={{ opacity: 0 }}
-              >
-                <Plus size={24} />
-                <span>Custom Preset</span>
-              </motion.button>
+              <div className="grow">
+                <motion.button
+                  onClick={() => handleCreateCustomPreset()}
+                  whileTap={{ scale: 1.1 }}
+                  transition={{
+                    duration: 0.2,
+                    delay: isFirstRender ? 0.2 * 4 : 0,
+                  }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="flex relative hover:bg-black/20 data-[selected=true]:bg-white/30 transition-all flex-col gap-2 w-full
+                         py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500 text-sm"
+                  exit={{ opacity: 0 }}
+                >
+                  <Plus size={24} />
+                  <span>Custom Preset</span>
+                </motion.button>
+              </div>
             )}
           </div>
         </div>
