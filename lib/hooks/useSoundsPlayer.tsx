@@ -14,10 +14,11 @@ export function useSoundsPlayer() {
   const [volume, setVolume] = useState<{ [key: string]: number }>({});
   const [anySoundPlaying, setAnySoundPlaying] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [selectedPreset, setSelectedPreset] = useState<any>("");
+  const [selectedPreset, setSelectedPreset] = useState<any>(soundsPresets);
   const [previouslyPlaying, setPreviouslyPlaying] = useState<{
     [key: string]: boolean;
   }>({});
+  const [presets, setPresets] = useState<any[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
 
@@ -151,11 +152,26 @@ export function useSoundsPlayer() {
     }
 
     setPlaying((prev) => ({ ...prev, [sound.name]: !prev[sound.name] }));
+    if (selectedPreset) setSelectedPreset("");
   };
 
+  const handleCreateCustomPreset = useCallback(() => {
+    const customPreset = Object.fromEntries(
+      sounds.map((sound) => [sound.name, playing[sound.name]])
+    );
+
+    soundsPresets["Custom"] = [customPreset];
+    setPresets([...presets, soundsPresets["Custom"]]);
+  }, [playing, sounds]);
+
+  const handleDeleteCustomPreset = useCallback(() => {
+    setPresets(presets.filter((preset) => preset !== soundsPresets["Custom"]));
+    delete soundsPresets["Custom"];
+  }, []);
+
   const handleSelectPreset = useCallback(
-    (preset) => {
-      const presetSounds = soundsPresets[preset][0];
+    (preset: string) => {
+      const presetSounds = soundsPresets[preset]?.[0] || {};
 
       if (preset === selectedPreset) {
         Object.entries({ ...presetSounds, ...previouslyPlaying }).forEach(
@@ -164,17 +180,18 @@ export function useSoundsPlayer() {
             if (sound) togglePlay(sound);
           }
         );
+
         if (playerRef.current) {
           playerRef.current.pauseVideo();
         }
+
         if (audioElements) {
           Object.keys(audioElements).forEach((key) => {
             const audio = audioElements[key];
-            if (audio) {
-              audio.pause();
-            }
+            if (audio) audio.pause();
           });
         }
+
         setSelectedPreset("");
         setPlaying({});
         return;
@@ -265,5 +282,7 @@ export function useSoundsPlayer() {
     anySoundPlaying,
     selectedPreset,
     handleSelectPreset,
+    handleCreateCustomPreset,
+    handleDeleteCustomPreset,
   };
 }
