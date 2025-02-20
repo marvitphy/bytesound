@@ -1,5 +1,5 @@
 "use client";
-import { Play, Pause, RefreshCw } from "lucide-react";
+import { Play, Pause, RefreshCw, Plus, Trash } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
 
@@ -25,6 +25,8 @@ export default function Home() {
     volume,
     handleSelectPreset,
     selectedPreset,
+    handleCreateCustomPreset,
+    handleDeleteCustomPreset,
   } = useSoundsPlayer();
 
   const isFirstRender = useIsFirstRender();
@@ -48,30 +50,59 @@ export default function Home() {
                 {presets.map((preset, index) => {
                   const Icon = presetIcons[presetName];
                   return (
-                    <motion.button
-                      key={index}
-                      onClick={() => handleSelectPreset(presetName)}
-                      whileTap={{ scale: 1.1 }}
-                      transition={{
-                        duration: 0.2,
-                        delay: isFirstRender ? 0.2 * index : 0,
-                      }}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      data-selected={
-                        presetName === selectedPreset ? "true" : "false"
-                      }
-                      className="flex  hover:bg-black/20 data-[selected=true]:bg-white/30 transition-all flex-col gap-2 w-full py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500 text-sm"
-                      exit={{ opacity: 0 }}
-                      data-playing={playing[presetName] ? "true" : "false"}
-                    >
-                      {Icon && <Icon size={24} />}
-                      <span>{presetName}</span>
-                    </motion.button>
+                    <>
+                      <motion.button
+                        key={index}
+                        onClick={() => handleSelectPreset(presetName)}
+                        whileTap={{ scale: 1.1 }}
+                        transition={{
+                          duration: 0.2,
+                          delay: isFirstRender ? 0.2 * index : 0,
+                        }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        data-selected={
+                          presetName === selectedPreset ? "true" : "false"
+                        }
+                        className="flex  hover:bg-black/20 data-[selected=true]:bg-white/30 transition-all flex-col gap-2 w-full py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500 text-sm"
+                        exit={{ opacity: 0 }}
+                        data-playing={playing[presetName] ? "true" : "false"}
+                      >
+                        {Icon && <Icon size={24} />}
+
+                        <span>{presetName}</span>
+                      </motion.button>
+                      {presetName === "Custom" && (
+                        <button
+                          onClick={handleDeleteCustomPreset}
+                          className="w-6 h-6 rounded-full bg-white/20 relative top-1 right-1 flex items-center justify-center"
+                        >
+                          <Trash size={14} />
+                        </button>
+                      )}
+                    </>
                   );
                 })}
               </div>
             ))}
+
+            {anySoundPlaying && !selectedPreset && (
+              <motion.button
+                onClick={() => handleCreateCustomPreset()}
+                whileTap={{ scale: 1.1 }}
+                transition={{
+                  duration: 0.2,
+                  delay: isFirstRender ? 0.2 * 4 : 0,
+                }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="flex  hover:bg-black/20 transition-all flex-col gap-2 w-full py-3 md:px-0 rounded-lg items-center justify-center border border-neutral-500 text-sm"
+                exit={{ opacity: 0 }}
+              >
+                <Plus size={24} />
+                <span>Custom Preset</span>
+              </motion.button>
+            )}
           </div>
         </div>
         <div className="h-screen md:h-full pt-[9rem] md:pt-0 md:pb-0 md:px-0 pb-20 px-4 scrollbar-hide overflow-y-auto w-full">
