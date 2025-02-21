@@ -1,11 +1,10 @@
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import type { ComponentProps } from "react";
+import { motion, type HTMLMotionProps } from "framer-motion";
 
-type LoadingAbsoluteProps = ComponentProps<"div">;
-export function LoadingAbsolute({ ...props }: LoadingAbsoluteProps) {
+export function LoadingAbsolute({ ...props }: HTMLMotionProps<"div">) {
     return (
-        <div
+        <motion.div
             {...props}
             className={cn(
                 "absolute left-0 top-0 bg-black/60 z-[9999] w-full h-full flex items-center justify-center ",
@@ -13,6 +12,6 @@ export function LoadingAbsolute({ ...props }: LoadingAbsoluteProps) {
             )}
         >
             <Loader2 className="animate-spin text-white" />
-        </div>
+        </motion.div>
     );
 }

@@ -23,6 +23,7 @@ export function useSoundsPlayer() {
         (video) => video.genre === genreSelected
     );
     const [youtubePlayerisReady, setYoutubePlayerisReady] = useState(false);
+    const [globalVolume, setGlobalVolume] = useState(100);
 
     useEffect(() => {
         // Carregar API do YouTube
@@ -155,6 +156,10 @@ export function useSoundsPlayer() {
             }
         }
 
+        setVolume((prev) => ({
+            ...prev,
+            [sound.name]: volume[sound.name] ?? 20,
+        }));
         setPlaying((prev) => ({ ...prev, [sound.name]: !prev[sound.name] }));
     };
 
@@ -207,14 +212,14 @@ export function useSoundsPlayer() {
     );
 
     const changeVolume = (sound: (typeof sounds)[number], value: number[]) => {
-        if (sound.youtube) {
-            if (playerRef.current) {
-                playerRef.current.setVolume(value[0]);
-            }
+        const relativeVolume = (value[0] / 100) * (globalVolume / 100) * 100;
+
+        if (sound.youtube && playerRef.current) {
+            playerRef.current.setVolume(relativeVolume);
         } else {
             const audio = audioElements[sound.name];
             if (audio) {
-                audio.volume = value[0] / 100;
+                audio.volume = relativeVolume / 100;
             }
         }
 
@@ -261,6 +266,17 @@ export function useSoundsPlayer() {
         setAnySoundPlaying(isAnySoundPlaying);
     }, [playing, audioElements]);
 
+    const changeGlobalVolume = (value: number) => {
+        setGlobalVolume(value);
+
+        Object.keys(volume).forEach((soundName) => {
+            const sound = sounds.find((s) => s.name === soundName);
+            if (sound) {
+                changeVolume(sound, [volume[soundName]]);
+            }
+        });
+    };
+
     return {
         togglePlay,
         changeVolume,
@@ -272,5 +288,7 @@ export function useSoundsPlayer() {
         selectedPreset,
         youtubePlayerisReady,
         handleSelectPreset,
+        changeGlobalVolume,
+        globalVolume,
     };
 }
