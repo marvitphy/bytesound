@@ -1,8 +1,11 @@
 export function convertToSeconds(time: string): number {
-  const parts = time.split(":");
-  const hours = parseInt(parts[0]);
-  const minutes = parseInt(parts[1]);
-  const seconds = parseInt(parts[2]);
+    const parts = time.split(":").map(Number);
 
-  return hours * 3600 + minutes * 60 + seconds;
+    if (parts.length === 3) {
+        return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    } else if (parts.length === 2) {
+        return parts[0] * 60 + parts[1];
+    } else {
+        throw new Error("Formato de tempo inválido. Use HH:MM:SS ou MM:SS.");
+    }
 }

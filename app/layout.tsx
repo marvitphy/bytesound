@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "ByteSound",
   icons: {
     icon: "/favicon-32x32.png",
-  }
+  },
 };
 
 export default function RootLayout({
@@ -28,11 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased  [&::-webkit-scrollbar]:w-1.5
-  [&::-webkit-scrollbar-track]:rounded-full
-  [&::-webkit-scrollbar-track]:bg-neutral-900
-  [&::-webkit-scrollbar-thumb]:rounded-full
-  [&::-webkit-scrollbar-thumb]:bg-neutral-700`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased  [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-900 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-700`}
       >
         {children}
       </body>

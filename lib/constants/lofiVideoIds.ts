@@ -57,23 +57,33 @@ export const lofiIds = [
     genre: "downtempo",
   },
   {
-    id: "pbTO0w-fWKE",
+    id: "Lqk9cVQa5g0",
+    duration: convertToSeconds("3:03:01"),
+    genre: "groove",
+  },
+  {
+    id: "6n2dWKCVlzY",
+    duration: convertToSeconds("29:04"),
+    genre: "groove",
+  },
+  {
+    id: "fUW0XWn1Gsk",
+    duration: convertToSeconds("1:12:11"),
+    genre: "groove",
+  },
+  {
+    id: "D6tFlbkCv-8",
+    duration: convertToSeconds("1:00:46"),
+    genre: "groove",
+  },
+  {
+    id: "k4hjX6ZsplU",
     duration: convertToSeconds("1:00:02"),
     genre: "groove",
   },
   {
-    id: "yaoAv4-FcEI",
-    duration: convertToSeconds("1:00:02"),
-    genre: "groove",
-  },
-  {
-    id: "6VRSCHmkz7I",
-    duration: convertToSeconds("1:00:02"),
-    genre: "groove",
-  },
-  {
-    id: "hNrt704O0tU",
-    duration: convertToSeconds("1:00:02"),
+    id: "xdjeWdMDjxE",
+    duration: convertToSeconds("1:01:49"),
     genre: "groove",
   },
 ];
