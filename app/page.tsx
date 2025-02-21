@@ -14,7 +14,6 @@ import {
 import { useSoundsPlayer } from "@/lib/hooks/useSoundsPlayer";
 import { soundsPresets, presetIcons } from "@/lib/constants/presets";
 import { LoadingAbsolute } from "@/components/LoadingAbsolute";
-import { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 
 export default function Home() {
@@ -34,7 +33,7 @@ export default function Home() {
     } = useSoundsPlayer();
 
     const isFirstRender = useIsFirstRender();
-    const [showGlobalVolume, setShowGlobalVolume] = useState(false);
+
     return (
         <div className="flex relative overflow-y-hidden bg-neutral-950 text-white justify-center items-center min-h-screen max-h-screen font-[family-name:var(--font-geist-sans)] ">
             <video
