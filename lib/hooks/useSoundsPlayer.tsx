@@ -92,9 +92,6 @@ export function useSoundsPlayer() {
             Groove: genreSelected === "groove",
         };
 
-        console.log(genreSelected);
-        console.log(video, start);
-
         setPlaying((prev) => ({
             ...prev,
             Lofi: genreState.Lofi,
