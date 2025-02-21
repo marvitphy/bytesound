@@ -1,5 +1,5 @@
 "use client";
-import { Play, Pause, RefreshCw, Loader2 } from "lucide-react";
+import { Play, Pause, RefreshCw } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
 
